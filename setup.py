@@ -8,16 +8,21 @@ try:
 except:
     from setuptools import Extension as Pybind11Extension
 
-libraries = ['openblas', 'lapacke']
+#libraries = ['openblas', 'lapacke']
+libraries = ['mkl_rt']	# use intel mkl
 
 include_dirs = [
     os.path.join("src", "cpp", "core"),
     os.path.join("src", "cpp", "interface_python"),
-    os.path.join("eigen"),
+    #os.path.join("eigen"),
+    os.path.join("eigen", "include", "eigen3"),	#the path containing Eigen3 directory
 ]
 
-extra_compile_args = ['-fopenmp']
-extra_link_args = ['-lgomp']
+#extra_compile_args = ['-fopenmp']
+#extra_link_args = ['-lgomp']
+#intel
+extra_compile_args = ["-qopenmp"]
+extra_link_args = ['-liomp5']
 
 sources = sorted(glob("src/cpp/core/*.cpp")) + sorted(glob("src/cpp/interface_python/*.cpp"))
 
